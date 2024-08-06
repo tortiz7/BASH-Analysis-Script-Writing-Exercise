@@ -1,19 +1,22 @@
 #!/bin/bash
 
-# set the file that will be analyzed by my script (log_file) and the file that the script will print the results to (output_file)
+# set the file that will be analyzed by my script (source) and the file that the script will print the results to (destination)
 
 source="/var/log/auth_log.log"
 destination="suspicious_activity.log"
 
 # creates an array for the keywords my script will anaylze the log file for in the loop
+
 keywords=("Failed password" "Unauthorized access" "error: PAM: Authentication failure" "invalid user")
 
 # Some echo statements for debugging purposes
+
 echo "Script starting"
 echo "log file path: $source"
 echo "Output file path: $destination"
 
 # Check if the log file exists
+
 if [[ ! -f "$source" ]]; then
     echo "Log file does not exist."
     exit 1
@@ -39,4 +42,5 @@ done < "$source"
 # Ran into a hanging error because I didn't specify the input file at the end of the while loop. WHOOPS!
 
 # And finally, I will schedule the script to run daily at midnight via a crontab command
+
 (crontab -l 2>/dev/null; echo "0 0 * * * /GitPractice/log_analysis_script.sh") | crontab -
